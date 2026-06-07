@@ -1,0 +1,35 @@
+#
+# Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU AGPL v3 license: https://github.com/azerothcore/azerothcore-wotlk/blob/master/LICENSE-AGPL3
+#
+
+########################################
+# QuestCatchup Configuration
+########################################
+#
+#    QuestCatchup.Enabled
+#        Description: Enable or disable the Quest Catchup module.
+#                     0 = Disabled (command will not work).
+#                     1 = Enabled.
+#        Default:     1
+#
+#    QuestCatchup.DryRun
+#        Description: Enable dry-run mode to preview eligible quests without committing changes.
+#                     0 = Live mode (complete quests and grant rewards).
+#                     1 = Dry-run mode (only list eligible quests).
+#        Default:     0
+#
+#    QuestCatchup.LogCompleted
+#        Description: Log completed quests to console.
+#                     0 = Disabled.
+#                     1 = Enabled.
+#        Default:     1
+#
+
+QuestCatchup.Enabled = 1
+QuestCatchup.DryRun = 0
+QuestCatchup.LogCompleted = 1
+
+# Logging
+# Set to 4 (debug) or 5 (trace) to see detailed output.
+# Example: Logger.QuestCatchup=4,Console Server
+# 0 = off, 1 = error, 2 = warn, 3 = info, 4 = debug, 5 = trace
