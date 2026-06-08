@@ -2,7 +2,7 @@
 
 ## Description
 
-AzerothCore WotLK module that provides `.qcatchup` (alias `.qc`) for syncing quest progress from a targeted player to you, and `.qsync` for group-wide everyone-to-everyone sync.
+AzerothCore WotLK module that provides `.qcatchup` (alias `.qc`) for syncing quest progress from a targeted player to you, and `.qsync` for group-wide everyone-to-everyone sync. It's a little op/cheaty but we've all leveled alts and abhor the grind sometimes. 
 
 ### Features
 
@@ -23,13 +23,19 @@ AzerothCore WotLK module that provides `.qcatchup` (alias `.qc`) for syncing que
 ### Installation
 
 1. Place this module inside the `modules/mod-quest-catchup/` directory of your AzerothCore installation
+```
+git clone https://www.github.com/Jellypowered/mod-quest-catchup.git
+```
 2. Re-run CMake and rebuild:
 
 ```bash
 cmake -B build
 cmake --build build --target modules -j$(nproc)
 ```
-
+or from your \<AcoreDir\> 
+```
+./acore.sh compiler build
+``` 
 3. Restart the worldserver
 
 ### Usage
@@ -58,7 +64,7 @@ cmake --build build --target modules -j$(nproc)
 
 ### Configuration
 
-Copy `conf/mod-quest-catchup.conf.dist` from the module directory to your modules config folder (e.g. `conf/modules/mod-quest-catchup.conf`):
+Copy `conf/mod-quest-catchup.conf.dist` from the module directory to your modules config folder (e.g. `<AcoreDir>/env/dist/etc/modules/mod-quest-catchup.conf`):
 
 ```ini
 ########################################
