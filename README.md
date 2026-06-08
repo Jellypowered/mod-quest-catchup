@@ -2,11 +2,12 @@
 
 ## Description
 
-AzerothCore WotLK module that provides a `.qcatchup` (alias `.qc`) command for quickly syncing quest progress from a targeted player (or self) to the executing player.
+AzerothCore WotLK module that provides `.qcatchup` (alias `.qc`) for syncing quest progress from a targeted player to you, and `.qsync` for group-wide everyone-to-everyone sync.
 
 ### Features
 
 - **Target-based quest sync**: Click on a player to target them, then run `.qc` to sync their completed quests and accept their in-progress quests to you
+- **Group-wide quest sync (`.qsync`)**: Syncs eligible quests from every raid/party member to every other member — one command for the whole group
 - **Eligibility filtering**: Only quests that match your level, race, and class are synced
 - **Reward-aware**: Grants XP, items, and spells/abilities from the synced quests
 - **Spell tracking**: Lists all spells and abilities gained from completed quests
@@ -33,13 +34,27 @@ cmake --build build --target modules -j$(nproc)
 
 ### Usage
 
+#### `.qc` / `.qcatchup` — single target sync
+
 1. **Target a player** — Click on the player's character to set them as your target
 2. **Run the command** — Type `.qc` or `.qcatchup` in chat
 
 - **With a target**: Syncs all eligible completed quests from the targeted player to you
-- **Without a target**: Syncs your own completed quests to yourself (useful for re-granting rewards)
+- **Without a target**: Shows "You must select a player target to use this command."
 
 > **Note**: The command uses your **in-game target cursor**, not the command argument. Type `.qc` while targeting the desired player — do not include the name in the command.
+
+#### `.qsync` — group-wide sync (everyone to everyone)
+
+1. **Be in a party or raid** — Solo players cannot use this command
+2. **Run the command** — Type `.qsync` in chat
+
+- Iterates through all group members, syncing each member's completed/in-progress quests to every other member
+- Silent during execution (no per-quest spam)
+- Prints one clean summary at the end with totals and spells gained
+- Offline members are skipped silently
+
+> **Note**: If a party member is level 80 and another is level 30, only quests eligible for the level 30 player will be synced. Eligibility is checked per-receiver, so high-level quests won't be forced onto low-level alts.
 
 ### Configuration
 
@@ -86,29 +101,13 @@ Log levels: `0` = off, `1` = error, `2` = warn, `3` = info, `4` = debug, `5` = t
 
 ### Example Output
 
-**In-game chat (dry-run):**
+**`.qc` — single target (live mode):**
 
 ```
 Quest Catchup for Goku:
   Target has completed: 51 quests
   Target has in-progress: 7 quests
   Eligible for you: 56
-  Already have: 0
-  [DRY RUN] Would complete/accept: 56 quests
-  Spells/Abilities: 
-    - Swift White Steed (ID: 33388)
-    - Ebon Gryphon (ID: 33389)
-  Set QuestCatchup.DryRun=false in worldserver.conf to actually complete them.
-```
-
-**In-game chat (live mode):**
-
-```
-Quest Catchup for Goku:
-  Target has completed: 51 quests
-  Target has in-progress: 7 quests
-  Eligible for you: 56
-  Already have: 0
   Completed: 51 quests
   Accepted in-progress: 5 quests
   Gained spells/abilities:
@@ -116,19 +115,31 @@ Quest Catchup for Goku:
     - Ebon Gryphon (ID: 33389)
 ```
 
-**Server console (live mode):**
+**`.qc` — no target selected:**
 
 ```
-=== Quest Catchup: Goku ===
-  Target Goku completed: 62 quests
-  Target Goku in-progress: 7 quests
-  Eligible for you: 55 quests
-  Already have: 0 quests
-  Actually completed: 55 quests
-  Accepted in-progress: 5 quests
+You must select a player target to use this command.
 ```
 
-Both modes list spells/abilities in the in-game chat output.
+**`.qsync` — raid sync (live mode):**
+
+```
+Quest Sync (Raid of 8):
+  Members: 8
+  Total syncs: 56
+  Quests completed: 342
+  Quests accepted: 48
+  Spells gained:
+    - Swift White Steed (ID: 33388)
+    - Ebon Gryphon (ID: 33389)
+    - Mount (ID: 16843)
+```
+
+**`.qsync` — solo player:**
+
+```
+You are not in a group.
+```
 
 ### License
 
