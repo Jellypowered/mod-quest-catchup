@@ -7,12 +7,14 @@
 
 #include "Chat.h"
 #include <set>
+#include <vector>
 
 namespace QC
 {
     bool Enabled;
     bool DryRun;
     bool LogCompleted;
+    bool RepairBrokenQuests;
 
     void LoadConfig(bool reload);
 
@@ -22,11 +24,14 @@ namespace QC
     {
         uint32 completed = 0;
         uint32 accepted = 0;
+        uint32 repaired = 0;  // Broken quests that were fixed
         uint32 dryRunTotal = 0;
         std::set<uint32> rewardSpellIds;
+        std::vector<uint32> acceptQuestIds;
+        std::vector<uint32> completeQuestIds;
     };
 
-    SyncStats SyncQuestsToPlayer(Player* source, Player* target);
+    SyncStats SyncQuestsToPlayer(Player* source, Player* target, bool dryRunMode);
     bool HandleCatchupCommand(ChatHandler* handler);
 }
 

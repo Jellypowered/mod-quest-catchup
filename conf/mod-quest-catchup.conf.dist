@@ -16,6 +16,7 @@
 #        Description: Enable dry-run mode to preview eligible quests without committing changes.
 #                     0 = Live mode (complete quests and grant rewards).
 #                     1 = Dry-run mode (only list eligible quests).
+#                     Can be overridden using .qsync doveride or .qsync dryrunoverride
 #        Default:     0
 #
 #    QuestCatchup.LogCompleted
@@ -24,12 +25,21 @@
 #                     1 = Enabled.
 #        Default:     1
 #
+#    QuestCatchup.RepairBrokenQuests
+#        Description: Attempt to repair quests that are marked as rewarded but have unmet objectives.
+#                     This fixes broken quest states from bot sync or other incomplete completions.
+#                     0 = Disabled (skip already-rewarded quests).
+#                     1 = Enabled (repair broken completions).
+#        Default:     1
+#
 
 QuestCatchup.Enabled = 1
 QuestCatchup.DryRun = 0
 QuestCatchup.LogCompleted = 1
+QuestCatchup.RepairBrokenQuests = 1
 
 # Logging
 # Set to 4 (debug) or 5 (trace) to see detailed output.
 # Example: Logger.QuestCatchup=4,Console Server
 # 0 = off, 1 = error, 2 = warn, 3 = info, 4 = debug, 5 = trace
+Logger.QuestCatchup=4,Console Server

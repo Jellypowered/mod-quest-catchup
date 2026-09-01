@@ -8,7 +8,9 @@ AzerothCore WotLK module that provides `.qcatchup` (alias `.qc`) for syncing que
 
 - **Target-based quest sync**: Click on a player to target them, then run `.qc` to sync their completed quests and accept their in-progress quests to you
 - **Group-wide quest sync (`.qsync`)**: Syncs eligible quests from every raid/party member to every other member — one command for the whole group
+- **Dry-run override (`.qsync doveride`)**: Forces `.qsync` to run live even if `QuestCatchup.DryRun=1`, while still printing the detailed grouped summary
 - **Eligibility filtering**: Only quests that match your level, race, and class are synced
+- **One-time progression only**: Daily, weekly, monthly, seasonal, and repeatable quests are excluded to prevent duplicate rewards and XP abuse
 - **Reward-aware**: Grants XP, items, and spells/abilities from the synced quests
 - **Spell tracking**: Lists all spells and abilities gained from completed quests
 - **Dry-run mode**: Preview eligible quests without committing any changes
@@ -56,11 +58,52 @@ or from your \<AcoreDir\>
 2. **Run the command** — Type `.qsync` in chat
 
 - Iterates through all group members, syncing each member's completed/in-progress quests to every other member
+- Excludes daily, weekly, monthly, seasonal, and repeatable quests from catch-up
 - Silent during execution (no per-quest spam)
 - Prints one clean summary at the end with totals and spells gained
 - Offline members are skipped silently
 
 > **Note**: If a party member is level 80 and another is level 30, only quests eligible for the level 30 player will be synced. Eligibility is checked per-receiver, so high-level quests won't be forced onto low-level alts.
+
+#### `.qsync doveride` — live sync even when DryRun is enabled
+
+If `QuestCatchup.DryRun = 1` in config, you can still run a live sync with:
+
+```txt
+.qsync doveride
+```
+
+This behaves like `.qsync` with dry-run disabled, but still prints the detailed grouped summary so you can see exactly which bots were accepted/completed per quest.
+
+#### Understanding `Total syncs`
+
+`Total syncs` is the number of source→target comparisons performed by `.qsync`.
+It is an everyone-to-everyone operation, excluding self-syncs.
+
+Formula:
+
+```txt
+Total syncs = group size × (group size - 1)
+```
+
+Examples:
+
+- **5-player party**: `5 × 4 = 20`
+- **10-player raid**: `10 × 9 = 90`
+- **25-player raid**: `25 × 24 = 600`
+- **40-player raid**: `40 × 39 = 1560`
+
+Example with a 5-player party (`A, B, C, D, E`):
+
+```txt
+A→B A→C A→D A→E
+B→A B→C B→D B→E
+C→A C→B C→D C→E
+D→A D→B D→C D→E
+E→A E→B E→C E→D
+```
+
+That is 20 total sync comparisons.
 
 ### Configuration
 
@@ -139,6 +182,21 @@ Quest Sync (Raid of 8):
     - Swift White Steed (ID: 33388)
     - Ebon Gryphon (ID: 33389)
     - Mount (ID: 16843)
+```
+
+**`.qsync` — dry-run summary:**
+
+```
+Quest Sync (Raid of 40):
+  Members: 40
+  Total syncs: 1560
+  [DRY RUN] Raw sync matches: 385
+  [DRY RUN] Unique bot quest actions: 15
+    Completes: 15
+  [Complete]
+    [5545] [A Bundle of Trouble] [Bots: Bella, Fresca, Healadin, Helen, Igothealz, Jelly, Karen, Kate, Oldman, Shockade, Shooter, Sneaky, Vendor, Vera]
+    [6261] [Dungar Longdrink] [Bots: Audin]
+  Set QuestCatchup.DryRun=false in worldserver.conf or use .qsync doveride to actually perform those actions.
 ```
 
 **`.qsync` — solo player:**
