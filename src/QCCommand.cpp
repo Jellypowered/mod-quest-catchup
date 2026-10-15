@@ -226,7 +226,7 @@ namespace QC
             else
             {
                 // Otherwise just mark as rewarded to avoid giving xp/gold/items
-                target->SetRewardedQuest(quest);
+                target->SetRewardedQuest(questId);
             }
 
             stats.completeQuestIds.push_back(questId);
