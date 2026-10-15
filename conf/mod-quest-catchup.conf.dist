@@ -32,11 +32,19 @@
 #                     1 = Enabled (repair broken completions).
 #        Default:     1
 #
+#    QuestCatchup.RewardsEnabled
+#        Description: Enable or disable quest rewards for quests marked as complete with this module.
+#                     If false, quests will be marked as completed, but you will receive no XP/Gold/Items
+#                     0 = Disabled (skip rewards).
+#                     1 = Enabled (gain rewards).
+#        Default:     1
+#
 
 QuestCatchup.Enabled = 1
 QuestCatchup.DryRun = 0
 QuestCatchup.LogCompleted = 1
 QuestCatchup.RepairBrokenQuests = 1
+QuestCatchup.RewardsEnabled = 1
 
 # Logging
 # Set to 4 (debug) or 5 (trace) to see detailed output.
