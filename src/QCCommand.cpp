@@ -30,6 +30,7 @@ namespace QC
         DryRun = sConfigMgr->GetOption<bool>("QuestCatchup.DryRun", false);
         LogCompleted = sConfigMgr->GetOption<bool>("QuestCatchup.LogCompleted", true);
         RepairBrokenQuests = sConfigMgr->GetOption<bool>("QuestCatchup.RepairBrokenQuests", true);
+        RewardsEnabled = sConfigMgr->GetOption<bool>("QuestCatchup.RewardsEnabled", true);
 
         if (reload)
             LOG_DEBUG("module.QuestCatchup", "Configuration reloaded. Enabled={}, DryRun={}, LogCompleted={}, RepairBrokenQuests={}", Enabled, DryRun, LogCompleted, RepairBrokenQuests);
@@ -217,8 +218,16 @@ namespace QC
             // Complete the quest
             target->CompleteQuest(questId);
 
-            // Grant rewards
-            target->RewardQuest(quest, 0, target, false);
+            // Grant rewards if enabled
+            if (RewardsEnabled)
+            {
+                target->RewardQuest(quest, 0, target, false);
+            }
+            else
+            {
+                // Otherwise just mark as rewarded to avoid giving xp/gold/items
+                target->SetRewardedQuest(questId);
+            }
 
             stats.completeQuestIds.push_back(questId);
 

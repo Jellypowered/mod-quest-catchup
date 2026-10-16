@@ -15,6 +15,7 @@ namespace QC
     bool DryRun;
     bool LogCompleted;
     bool RepairBrokenQuests;
+    bool RewardsEnabled;
 
     void LoadConfig(bool reload);
 
